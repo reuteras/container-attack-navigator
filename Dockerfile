@@ -1,11 +1,18 @@
-FROM node:latest
+FROM node:current-slim
 
 LABEL maintainer="Coding <code@ongoing.today>"
 
 WORKDIR /nav-app/
+ENV DEBIAN_FRONTEND noninteractive
 
-# Install packages and build 
-RUN git clone https://github.com/mitre-attack/attack-navigator.git && \
+# Install packages and build
+
+RUN apt-get update --fix-missing && \
+    apt-get install -qqy --no-install-recommends \
+        ca-certificates \
+        git \
+        wget && \
+    git clone https://github.com/mitre-attack/attack-navigator.git && \
     mv attack-navigator/nav-app/* . && \
     rm -rf attack-navigator && \
     cd src/assets && \
@@ -17,7 +24,12 @@ RUN git clone https://github.com/mitre-attack/attack-navigator.git && \
     sed -i "s#enterprise-attack#assets#" config.json && \
     sed -i "s#mobile-attack#assets#" config.json && \
     sed -i "s#pre-attack#assets#" config.json && \
-    npm install --unsafe-perm
+    npm install --unsafe-perm && \
+    apt remove -y git wget && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    apt-get autoclean && \
+    rm -rf /var/lib/apt/lists/*
 
 CMD npm start
 
