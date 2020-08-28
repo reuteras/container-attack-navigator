@@ -31,7 +31,7 @@ RUN apt-get update --fix-missing && \
     apt-get autoclean && \
     rm -rf /var/lib/apt/lists/*
 
-CMD npm start
-
 USER node
 EXPOSE 4200
+
+CMD ["npm", "start"]
