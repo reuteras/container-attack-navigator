@@ -26,12 +26,13 @@ RUN apt-get update --fix-missing && \
     sed -i "s#pre-attack#assets#" config.json && \
     npm install --unsafe-perm && \
     npm link @angular/cli@8 && \
-    ng build --output-path /tmp/output
+    ng build --output-path /tmp/output && \
+    rm -rf /var/lib/apt/lists/*
 
 USER node
 EXPOSE 4200
 
 # Build final container to serve static content.
-FROM nginx
+FROM nginx:mainline-alpine
 COPY --from=build-env /tmp/output /usr/share/nginx/html
 
