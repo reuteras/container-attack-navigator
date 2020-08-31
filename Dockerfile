@@ -1,4 +1,4 @@
-FROM node:current-slim
+FROM node:current-slim as build-env
 
 LABEL maintainer="Coding <code@ongoing.today>"
 
@@ -25,13 +25,13 @@ RUN apt-get update --fix-missing && \
     sed -i "s#mobile-attack#assets#" config.json && \
     sed -i "s#pre-attack#assets#" config.json && \
     npm install --unsafe-perm && \
-    apt remove -y git wget && \
-    apt-get autoremove -y && \
-    apt-get clean && \
-    apt-get autoclean && \
-    rm -rf /var/lib/apt/lists/*
+    npm link @angular/cli@8 && \
+    ng build --output-path /tmp/output
 
 USER node
 EXPOSE 4200
 
-CMD ["npm", "start"]
+# Build final container to serve static content.
+FROM nginx
+COPY --from=build-env /tmp/output /usr/share/nginx/html
+
