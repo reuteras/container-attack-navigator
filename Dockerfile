@@ -1,4 +1,4 @@
-FROM node:14-buster-slim as build-env
+FROM node:current-buster-slim as build-env
 
 LABEL maintainer="Coding <code@ongoing.today>"
 
@@ -24,8 +24,9 @@ RUN apt-get update --fix-missing && \
     sed -i "s#enterprise-attack#assets#" config.json && \
     sed -i "s#mobile-attack#assets#" config.json && \
     sed -i "s#pre-attack#assets#" config.json && \
+    cd ../.. && \
     npm install --unsafe-perm && \
-    npm link @angular/cli@8 && \
+    npm install -g @angular/cli && \
     ng build --output-path /tmp/output && \
     rm -rf /var/lib/apt/lists/*
 
