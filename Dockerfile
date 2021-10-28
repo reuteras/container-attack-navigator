@@ -1,4 +1,4 @@
-FROM node:current-buster-slim as build-env
+FROM node:16-buster-slim as build-env
 
 LABEL maintainer="Coding <code@ongoing.today>"
 
