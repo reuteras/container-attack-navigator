@@ -5,7 +5,7 @@ LABEL maintainer="Coding <code@ongoing.today>"
 WORKDIR /nav-app/
 ENV DEBIAN_FRONTEND noninteractive
 
-ADD offline.sh /offline.sh
+COPY offline.sh /offline.sh
 
 # Install packages and build
 
