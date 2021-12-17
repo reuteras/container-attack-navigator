@@ -5,6 +5,8 @@ LABEL maintainer="Coding <code@ongoing.today>"
 WORKDIR /nav-app/
 ENV DEBIAN_FRONTEND noninteractive
 
+ADD offline.sh /offline.sh
+
 # Install packages and build
 
 RUN apt-get update --fix-missing && \
@@ -14,16 +16,8 @@ RUN apt-get update --fix-missing && \
         wget && \
     git clone https://github.com/mitre-attack/attack-navigator.git && \
     mv attack-navigator/nav-app/* . && \
-    rm -rf attack-navigator && \
     cd src/assets && \
-    # Cache for offline use
-    wget -q https://raw.githubusercontent.com/mitre/cti/master/enterprise-attack/enterprise-attack.json && \
-    wget -q https://raw.githubusercontent.com/mitre/cti/master/mobile-attack/mobile-attack.json && \
-    wget -q https://raw.githubusercontent.com/mitre/cti/master/pre-attack/pre-attack.json && \
-    sed -i "s#https://raw.githubusercontent.com/mitre/cti/master/##" config.json && \
-    sed -i "s#enterprise-attack#assets#" config.json && \
-    sed -i "s#mobile-attack#assets#" config.json && \
-    sed -i "s#pre-attack#assets#" config.json && \
+    sh /offline.sh && \
     cd ../.. && \
     npm install --unsafe-perm && \
     npm install -g @angular/cli && \
@@ -31,7 +25,6 @@ RUN apt-get update --fix-missing && \
     rm -rf /var/lib/apt/lists/*
 
 USER node
-EXPOSE 4200
 
 # Build final container to serve static content.
 FROM nginx:mainline-alpine
