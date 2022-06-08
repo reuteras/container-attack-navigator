@@ -1,4 +1,4 @@
-FROM node:16-buster-slim as build-env
+FROM node:16-bullseye-slim as build-env
 
 LABEL maintainer="Coding <code@ongoing.today>"
 
@@ -20,8 +20,8 @@ RUN apt-get update --fix-missing && \
     sh /offline.sh && \
     cd ../.. && \
     npm install --unsafe-perm && \
-    npm install -g @angular/cli && \
-    ng build --output-path /tmp/output && \
+    npm install -g @angular/cli@11 && \
+    ng build --outputPath=/tmp/output && \
     rm -rf /var/lib/apt/lists/*
 
 USER node
