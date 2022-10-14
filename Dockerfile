@@ -20,7 +20,7 @@ RUN apt-get update --fix-missing && \
     sh /offline.sh && \
     cd ../.. && \
     npm install --unsafe-perm && \
-    npm install -g @angular/cli@11 && \
+    npm install -g @angular/cli@11.0.3 && \
     ng build --outputPath=/tmp/output && \
     rm -rf /var/lib/apt/lists/*
 
