@@ -19,8 +19,8 @@ RUN apt-get update --fix-missing && \
     cd src/assets && \
     sh /offline.sh && \
     cd ../.. && \
-    npm install --unsafe-perm && \
-    npm install -g @angular/cli@11.0.3 && \
+    npm install --force --unsafe-perm && \
+    npm install --force -g @angular/cli@11 && \
     ng build --outputPath=/tmp/output && \
     rm -rf /var/lib/apt/lists/*
 
