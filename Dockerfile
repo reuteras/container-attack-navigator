@@ -1,4 +1,4 @@
-FROM node:16-bullseye-slim as build-env
+FROM node:20-bullseye-slim as build-env
 
 LABEL maintainer="Coding <code@ongoing.today>"
 
