@@ -1,13 +1,12 @@
-FROM node:20-bullseye-slim as build-env
+FROM node:18-bookworm as build-env
 
 LABEL maintainer="Coding <code@ongoing.today>"
 
-WORKDIR /nav-app/
-ENV DEBIAN_FRONTEND noninteractive
+ENV NODE_OPTIONS=--openssl-legacy-provider
+
+WORKDIR /src
 
 COPY offline.sh /offline.sh
-
-# Install packages and build
 
 RUN apt-get update --fix-missing && \
     apt-get install -qqy --no-install-recommends \
@@ -15,18 +14,20 @@ RUN apt-get update --fix-missing && \
         git \
         wget && \
     git clone https://github.com/mitre-attack/attack-navigator.git && \
-    mv attack-navigator/nav-app/* . && \
-    cd src/assets && \
+    mv attack-navigator/nav-app . && \
+    mkdir layers && \
+    cp attack-navigator/layers/*.md /src/layers/ && \
+    cp attack-navigator/*.md /src/ && \
+    cd nav-app/src/assets && \
     sh /offline.sh && \
     cd ../.. && \
-    npm install --force --unsafe-perm && \
+    npm install --force --unsafe-perm --legacy-peer-deps && \
     npm install --force -g @angular/cli@11 && \
     ng build --outputPath=/tmp/output && \
     rm -rf /var/lib/apt/lists/*
 
-USER node
-
 # Build final container to serve static content.
 FROM nginx:mainline-alpine
+LABEL maintainer="Coding <code@ongoing.today>"
 COPY --from=build-env /tmp/output /usr/share/nginx/html
 
