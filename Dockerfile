@@ -1,4 +1,4 @@
-FROM node:20-bookworm as build-env
+FROM node:21-bookworm as build-env
 
 LABEL maintainer="Coding <code@ongoing.today>"
 
