@@ -23,7 +23,7 @@ RUN apt-get update --fix-missing && \
     cd ../.. && \
     npm install --force --unsafe-perm --legacy-peer-deps && \
     npm install --force -g @angular/cli@11 && \
-    ng build --outputPath=/tmp/output && \
+    ng build --output-path=/tmp/output && \
     rm -rf /var/lib/apt/lists/*
 
 # Build final container to serve static content.
