@@ -11,6 +11,8 @@ on:
   pull_request:
     branches: [master]
 
+permissions: read-all
+
 # A workflow run is made up of one or more jobs that can run sequentially or
 # in parallel
 jobs:
@@ -31,4 +33,5 @@ jobs:
       - name: Lint Code Base
         uses: github/super-linter/slim@v6
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VALIDATE_DOCKERFILE_HADOLINT: false
