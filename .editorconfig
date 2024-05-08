@@ -19,7 +19,7 @@ trim_trailing_whitespace = true
 
 # Give operators breathing room, but not brackets
 spaces_around_operators = true
-spaces_around_brackets = false
+spaces_around_brackets = true
 
 # Max line length (not supported by all editors)
 # Enable this option by un-commenting the following line
