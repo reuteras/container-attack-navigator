@@ -6,7 +6,6 @@
                 {
                     "resource": "/dev-dependencies/Dockerfile.",
                     "check_ids": [
-                        "CKV_DOCKER_2"
                     ]
                 }
             ]
