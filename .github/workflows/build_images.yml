@@ -6,7 +6,9 @@ on:
     branches:
       - master
   schedule:
-    - cron: '5 6 1/7 * *'
+    - cron: '5 7 1/7 * *'
+
+permissions: read-all
 
 jobs:
   docker:
@@ -18,13 +20,13 @@ jobs:
       - name: Prepare
         id: prep
         run: |
-          DOCKER_IMAGE=${{ secrets.DOCKER_USERNAME }}/${GITHUB_REPOSITORY#*/}
+          DOCKER_IMAGE="${{ secrets.DOCKER_USERNAME }}/${GITHUB_REPOSITORY#*/}"
           VERSION=latest
-          SHORTREF=${GITHUB_SHA::8}
+          SHORTREF="${GITHUB_SHA::8}"
 
           # If this is git tag, use the tag name as a docker tag
           if [[ $GITHUB_REF == refs/tags/* ]]; then
-            VERSION=${GITHUB_REF#refs/tags/v}
+            VERSION="${GITHUB_REF#refs/tags/v}"
           fi
           TAGS="${DOCKER_IMAGE}:${VERSION},${DOCKER_IMAGE}:${SHORTREF}"
 
@@ -36,8 +38,8 @@ jobs:
           fi
 
           # Set output parameters.
-          echo tags=${TAGS} >> $GITHUB_OUTPUT
-          echo docker_image=${DOCKER_IMAGE} >> $GITHUB_OUTPUT
+          echo tags="${TAGS}" >> "$GITHUB_OUTPUT"
+          echo docker_image="${DOCKER_IMAGE}" >> "$GITHUB_OUTPUT"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@master
