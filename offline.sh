@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 grep '"data":' config.json | grep -oE "https:.*json" > urls
 
