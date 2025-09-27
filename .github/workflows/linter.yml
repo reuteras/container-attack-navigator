@@ -41,3 +41,4 @@ jobs:
           VALIDATE_DOCKERFILE_HADOLINT: false
           VALIDATE_MARKDOWN_PRETTIER: false
           VALIDATE_YAML_PRETTIER: false
+          VALIDATE_JSCPD: false
